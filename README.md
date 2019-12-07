@@ -1,4 +1,4 @@
-# AssignmentGenerator
+# Assignment Generator
 
 The Assignment Generator was created as part of a thesis work at Óbuda University, Hungary in 2019.
 
