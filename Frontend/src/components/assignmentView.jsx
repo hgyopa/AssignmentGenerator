@@ -42,6 +42,7 @@ class AssignmentView extends Component {
     await this.apiClient
       .get(`api/TestGenerator/GetAssignment/${this.props.match.params.id}`)
       .then(response => {
+        console.log(response.data);
         this.setState({
           assignment: response.data
         });
