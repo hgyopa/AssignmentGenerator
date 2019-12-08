@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.render(
   <React.Fragment>
-    <BrowserRouter>
+    <BrowserRouter basename="/AssignmentGeneratorPortal">
       <App />
       <ToastContainer />
     </BrowserRouter>
