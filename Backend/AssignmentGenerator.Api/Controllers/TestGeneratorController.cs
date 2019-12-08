@@ -26,7 +26,7 @@
 
         public TestGeneratorController()
         {
-            this.jarRoot = @"D:\PRIVATE\Projects\stanford-corenlp-full-2018-10-05";
+            this.jarRoot = System.Configuration.ConfigurationManager.AppSettings["StanfordNLPCorePackagePath"];
 
             this.properties = new PropertyBuilder()
                 .SetAnnotators(new[] { "tokenize", "ssplit", "pos", "lemma", "ner", "parse", "natlog", "dcoref", "truecase" })
