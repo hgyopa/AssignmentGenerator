@@ -75,7 +75,7 @@
             {
                 Type = QuestionType.InterrogativeWord,
                 Text = questionText,
-                Answers = new List<Answer> {new Answer {IsCorrectAnswer = true, Text = answerText}}
+                Answers = new List<Answer> {new Answer {IsCorrect = true, Text = answerText}}
             };
         }
     }

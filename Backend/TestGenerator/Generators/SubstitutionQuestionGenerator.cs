@@ -47,7 +47,7 @@
                             new Answer
                             {
                                 Text = textToBeReplaced,
-                                IsCorrectAnswer = true
+                                IsCorrect = true
                             }
                         }
                     });

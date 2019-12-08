@@ -22,6 +22,7 @@
         {
             var position = 0;
             var firstToken = sentence.Tokens[position];
+            var isPerson = false;
 
             if (firstToken.Pos != "NNP")
             {
@@ -29,15 +30,24 @@
             }
 
             var textToBeReplaced = firstToken.Text;
+
+            if (firstToken.NamedEntityTag == "PERSON")
+            {
+                isPerson = true;
+            }
             position++;
 
             while (this.conjuctionPOS.Contains(sentence.Tokens[position].Pos.ToUpper()) || sentence.Tokens[position].Pos == "NNP")
             {
+                if (sentence.Tokens[position].NamedEntityTag == "PERSON") isPerson = true;
                 textToBeReplaced += $" {sentence.Tokens[position].Text}";
                 position++;
             }
 
-            var questionText = $"{sentence.Text.CaseInsensitiveReplace(textToBeReplaced, "Who")}";
+            var questionText = isPerson
+                ? $"{sentence.Text.CaseInsensitiveReplace(textToBeReplaced, "Who")}"
+                : $"{sentence.Text.CaseInsensitiveReplace(textToBeReplaced, "What")}";
+
             var punctuationMark = sentence.Tokens[sentence.Tokens.Count - 1].Text;
             questionText = questionText.Replace(punctuationMark, " ?");
 
@@ -45,7 +55,7 @@
             {
                 Type = QuestionType.InterrogativeWord,
                 Text = questionText,
-                Answers = new List<Answer> {new Answer {IsCorrectAnswer = true, Text = textToBeReplaced}}
+                Answers = new List<Answer> {new Answer {IsCorrect = true, Text = textToBeReplaced}}
             };
         }
     }

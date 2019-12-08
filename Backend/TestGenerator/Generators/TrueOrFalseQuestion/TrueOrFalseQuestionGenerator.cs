@@ -32,7 +32,7 @@
                     Text = sentence.Text,
                     Answers = new List<Answer>
                     {
-                        new Answer{IsCorrectAnswer = true, Text = "true"}
+                        new Answer{IsCorrect = true, Text = "true"}
                     }
                 });
 
@@ -88,7 +88,7 @@
             {
                 Type = QuestionType.TrueOrFalse,
                 Text = questionText,
-                Answers = new List<Answer> { new Answer { IsCorrectAnswer = true, Text = textToBeReplaced } }
+                Answers = new List<Answer> { new Answer { IsCorrect = true, Text = textToBeReplaced } }
             };
         }
 

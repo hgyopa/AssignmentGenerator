@@ -38,7 +38,7 @@
             {
                 Text = questionText,
                 Type = QuestionType.TrueOrFalse,
-                Answers = new List<Answer> { new Answer { IsCorrectAnswer = true, Text = "false" } }
+                Answers = new List<Answer> { new Answer { IsCorrect = true, Text = "false" } }
             };
         }
         public Question UnnegateBe(Sentence sentence, int tokenNumber)
@@ -71,7 +71,7 @@
             {
                 Text = questionText,
                 Type = QuestionType.TrueOrFalse,
-                Answers = new List<Answer> { new Answer { IsCorrectAnswer = true, Text = "false" } }
+                Answers = new List<Answer> { new Answer { IsCorrect = true, Text = "false" } }
             };
         }
 
@@ -111,7 +111,7 @@
             {
                 Text = questionText,
                 Type = QuestionType.TrueOrFalse,
-                Answers = new List<Answer> { new Answer { IsCorrectAnswer = true, Text = "false" } }
+                Answers = new List<Answer> { new Answer { IsCorrect = true, Text = "false" } }
             };
         }
         public Question UnnegateHave(Sentence sentence, int tokenNumber)
@@ -140,7 +140,7 @@
             {
                 Text = questionText,
                 Type = QuestionType.TrueOrFalse,
-                Answers = new List<Answer> { new Answer { IsCorrectAnswer = true, Text = "false" } }
+                Answers = new List<Answer> { new Answer { IsCorrect = true, Text = "false" } }
             };
         }
 
@@ -201,7 +201,7 @@
             {
                 Text = questionText,
                 Type = QuestionType.TrueOrFalse,
-                Answers = new List<Answer> { new Answer { IsCorrectAnswer = true, Text = "false" } }
+                Answers = new List<Answer> { new Answer { IsCorrect = true, Text = "false" } }
             };
         }
 
@@ -213,7 +213,7 @@
             {
                 Text = questionText,
                 Type = QuestionType.TrueOrFalse,
-                Answers = new List<Answer>() { new Answer { IsCorrectAnswer = true, Text = "true"} }
+                Answers = new List<Answer>() { new Answer { IsCorrect = true, Text = "true"} }
             };
         }
 
@@ -225,7 +225,7 @@
             {
                 Text = questionText,
                 Type = QuestionType.TrueOrFalse,
-                Answers = new List<Answer>() { new Answer { IsCorrectAnswer = true, Text = "true" } }
+                Answers = new List<Answer>() { new Answer { IsCorrect = true, Text = "true" } }
             };
         }
     }
