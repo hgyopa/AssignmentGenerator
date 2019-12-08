@@ -53,6 +53,7 @@ class AssignmentView extends Component {
     await this.apiClient
       .post(`TestGenerator/CreateAssignment`, this.state.assignment)
       .then(response => {
+        console.log(response.data);
         this.setState({
           assignment: response.data
         });
@@ -65,7 +66,7 @@ class AssignmentView extends Component {
   updateAssignment = async () => {
     await this.apiClient
       .put(
-        `TestGenerator/UpdateAssignment/${this.props.match.params.id}`,
+        `TestGenerator/UpdateAssignment/${this.state.assignment.Id}`,
         this.state.assignment
       )
       .then(response => {
@@ -110,6 +111,7 @@ class AssignmentView extends Component {
   };
 
   handleSave = async () => {
+    console.log(this.state.assignment.Id);
     if (this.state.assignment.Id === 0) {
       await this.createAssignment();
     } else {

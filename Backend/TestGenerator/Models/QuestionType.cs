@@ -2,8 +2,8 @@
 {
     public enum QuestionType
     {
-        Substitution,
-        TrueOrFalse,
-        InterrogativeWord
+        Substitution = 1,
+        TrueOrFalse = 2,
+        InterrogativeWord = 3
     }
 }
