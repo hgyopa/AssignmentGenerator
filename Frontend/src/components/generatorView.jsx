@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import ls from "local-storage";
 
 class GeneratorView extends Component {
   state = { title: "", text: "" };
@@ -13,13 +14,14 @@ class GeneratorView extends Component {
     const { webApiBaseUrl } = this.props;
 
     this.apiClient = axios.create({
-      baseURL: webApiBaseUrl
+      baseURL: webApiBaseUrl,
+      headers: { Authorization: `Bearer ${ls.get("token")}` }
     });
   }
 
   generateTest = async () => {
     await this.apiClient
-      .post(`TestGenerator/GenerateTest`, {
+      .post(`api/TestGenerator/GenerateTest`, {
         Title: this.state.title,
         Text: this.state.text
       })

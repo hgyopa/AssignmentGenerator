@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 import axios from "axios";
+import ls from "local-storage";
 
 class Dashboard extends Component {
   state = { selectedTitleId: -1, assignments: [] };
@@ -13,7 +14,8 @@ class Dashboard extends Component {
     const { webApiBaseUrl } = this.props;
 
     this.apiClient = axios.create({
-      baseURL: webApiBaseUrl
+      baseURL: webApiBaseUrl,
+      headers: { Authorization: `Bearer ${ls.get("token")}` }
     });
   }
 
@@ -23,7 +25,7 @@ class Dashboard extends Component {
 
   getAssignments = async () => {
     await this.apiClient
-      .get("TestGenerator/GetAssignments")
+      .get("api/TestGenerator/GetAssignments")
       .then(response => {
         this.setState({
           assignments: response.data

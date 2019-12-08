@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import _ from "lodash";
 import axios from "axios";
 import { toast } from "react-toastify";
+import ls from "local-storage";
 
 class AssignmentView extends Component {
   state = {
@@ -15,7 +16,8 @@ class AssignmentView extends Component {
     const { webApiBaseUrl } = this.props;
 
     this.apiClient = axios.create({
-      baseURL: webApiBaseUrl
+      baseURL: webApiBaseUrl,
+      headers: { Authorization: `Bearer ${ls.get("token")}` }
     });
   }
 
@@ -38,7 +40,7 @@ class AssignmentView extends Component {
 
   getAssignment = async () => {
     await this.apiClient
-      .get(`TestGenerator/GetAssignment/${this.props.match.params.id}`)
+      .get(`api/TestGenerator/GetAssignment/${this.props.match.params.id}`)
       .then(response => {
         this.setState({
           assignment: response.data
@@ -51,9 +53,8 @@ class AssignmentView extends Component {
 
   createAssignment = async () => {
     await this.apiClient
-      .post(`TestGenerator/CreateAssignment`, this.state.assignment)
+      .post(`api/TestGenerator/CreateAssignment`, this.state.assignment)
       .then(response => {
-        console.log(response.data);
         this.setState({
           assignment: response.data
         });
@@ -66,7 +67,7 @@ class AssignmentView extends Component {
   updateAssignment = async () => {
     await this.apiClient
       .put(
-        `TestGenerator/UpdateAssignment/${this.state.assignment.Id}`,
+        `api/TestGenerator/UpdateAssignment/${this.state.assignment.Id}`,
         this.state.assignment
       )
       .then(response => {
@@ -111,7 +112,6 @@ class AssignmentView extends Component {
   };
 
   handleSave = async () => {
-    console.log(this.state.assignment.Id);
     if (this.state.assignment.Id === 0) {
       await this.createAssignment();
     } else {

@@ -19,15 +19,10 @@ const NavBar = () => {
               Generate
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/assignment">
-              Assignment
-            </NavLink>
-          </li>
         </ul>
         <ul className="navbar-nav mt-2 mt-md-0">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/logout">
+            <NavLink className="nav-link" to="/login">
               Log out
             </NavLink>
           </li>

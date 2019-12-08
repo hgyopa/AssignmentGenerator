@@ -5,11 +5,12 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Dashboard from "./components/dashboard";
 import GeneratorView from "./components/generatorView";
 import AssignmentView from "./components/assignmentView";
+import LoginView from "./components/loginView";
 
 const webApiBaseUrl =
   process.env.NODE_ENV === "development"
-    ? "https://localhost:44327/api/"
-    : "../AssignmentGeneratorApi/api/";
+    ? "https://localhost:44327/"
+    : "../AssignmentGeneratorApi/";
 
 function App() {
   return (
@@ -17,6 +18,12 @@ function App() {
       <NavBar />
       <main role="main" className="container">
         <Switch>
+          <Route
+            path="/login"
+            render={props => (
+              <LoginView {...props} webApiBaseUrl={webApiBaseUrl} />
+            )}
+          ></Route>
           <Route
             path="/dashboard"
             render={props => (
