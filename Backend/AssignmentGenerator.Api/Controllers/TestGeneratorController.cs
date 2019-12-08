@@ -90,6 +90,11 @@
         [Route("CreateAssignment")]
         public async Task<IHttpActionResult> CreateAssignment(AssignmentDTO assignmentDto)
         {
+            if (assignmentDto.Questions == null || !assignmentDto.Questions.Any())
+            {
+                throw new ArgumentException("Assignment must contain at least one question!");
+            }
+
             var assignment = Mappers.Mapper.MapFromAssignmentDTOToDAL(assignmentDto);
             assignment.UserId = User.Identity.GetUserId();
 
@@ -108,6 +113,11 @@
             if (id != assignmentDto.Id)
             {
                 throw new ArgumentException("Invalid id! Id in request url and id of the assignment don't match!");
+            }
+
+            if (assignmentDto.Questions == null || !assignmentDto.Questions.Any())
+            {
+                throw new ArgumentException("Assignment must contain at least one question!");
             }
 
             var assignment = Mappers.Mapper.MapFromAssignmentDTOToDAL(assignmentDto);

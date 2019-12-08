@@ -33,7 +33,7 @@
                 UserId = assignment.UserId,
                 CreationDate = assignment.CreationDate,
                 Title = assignment.Title,
-                Questions = assignment.Questions.Select(MapFromDALQuestionToDTO).ToList()
+                Questions = assignment.Questions?.Select(MapFromDALQuestionToDTO).ToList()
             };
         }
 
