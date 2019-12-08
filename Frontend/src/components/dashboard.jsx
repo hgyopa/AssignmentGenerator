@@ -1,32 +1,53 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
+import axios from "axios";
 
 class Dashboard extends Component {
-  state = { selectedTitleId: -1 };
+  state = { selectedTitleId: -1, assignments: [] };
 
-  assignments = [
-    {
-      id: 1,
-      title: "asdafksdvjsdnmvjsd sdjnsjd cajieeandfajedajnda caw cawjd ",
-      date: "2019-01-01"
-    },
-    { id: 2, title: "hfg", date: "2019-01-01" },
-    { id: 3, title: "hfg", date: "2019-01-01" },
-    { id: 4, title: "hfg", date: "2019-01-01" },
-    { id: 5, title: "hfg", date: "2019-01-01" },
-    { id: 6, title: "hfg", date: "2019-01-01" },
-    { id: 7, title: "hfg", date: "2019-01-01" },
-    { id: 8, title: "hfg", date: "2019-01-01" }
-  ];
+  apiClient;
+
+  constructor(props) {
+    super(props);
+
+    const { webApiBaseUrl } = this.props;
+
+    this.apiClient = axios.create({
+      baseURL: webApiBaseUrl
+    });
+  }
+
+  async componentDidMount() {
+    await this.getAssignments();
+  }
+
+  getAssignments = async () => {
+    await this.apiClient
+      .get("TestGenerator/GetAssignments")
+      .then(response => {
+        this.setState({
+          assignments: response.data
+        });
+      })
+      .catch(error => {
+        this.handleError(error);
+      });
+  };
+
+  handleError = error => {
+    console.log(error);
+  };
 
   handleSelect = id => {
     this.setState({ selectedTitleId: id });
   };
 
-  handleAssignmentOpen = () => {};
+  handleAssignmentOpen = () => {
+    this.props.history.push(`/assignment/${this.state.selectedTitleId}`);
+  };
 
   render() {
-    const { selectedTitleId } = this.state;
+    const { selectedTitleId, assignments } = this.state;
 
     return (
       <React.Fragment>
@@ -39,16 +60,16 @@ class Dashboard extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.assignments.map(assignment => (
+            {assignments.map(assignment => (
               <tr
-                key={assignment.id}
+                key={assignment.Id}
                 className={
-                  assignment.id === selectedTitleId ? "bg-primary" : ""
+                  assignment.Id === selectedTitleId ? "bg-primary" : ""
                 }
-                onClick={() => this.handleSelect(assignment.id)}
+                onClick={() => this.handleSelect(assignment.Id)}
               >
-                <td>{assignment.title}</td>
-                <td>{assignment.date}</td>
+                <td>{assignment.Title}</td>
+                <td>{assignment.CreationDate}</td>
               </tr>
             ))}
           </tbody>

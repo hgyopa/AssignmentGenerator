@@ -1,8 +1,38 @@
 import React, { Component } from "react";
 import { Form } from "react-bootstrap";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 class GeneratorView extends Component {
   state = { title: "", text: "" };
+
+  apiClient;
+
+  constructor(props) {
+    super(props);
+    const { webApiBaseUrl } = this.props;
+
+    this.apiClient = axios.create({
+      baseURL: webApiBaseUrl
+    });
+  }
+
+  generateTest = async () => {
+    await this.apiClient
+      .post(`TestGenerator/GenerateTest`, {
+        Title: this.state.title,
+        Text: this.state.text
+      })
+      .then(response => {
+        this.props.history.push({
+          pathname: "/assignment",
+          state: { assignment: response.data }
+        });
+      })
+      .catch(error => {
+        this.handleError(error);
+      });
+  };
 
   handleTitleChange = event => {
     this.setState({ title: event.target.value });
@@ -10,6 +40,17 @@ class GeneratorView extends Component {
 
   handleTextChange = event => {
     this.setState({ text: event.target.value });
+  };
+
+  handleGenerate = async () => {
+    await this.generateTest();
+  };
+
+  handleError = error => {
+    console.log(error);
+    toast("There was a problem while communicating with the Api", {
+      type: toast.TYPE.ERROR
+    });
   };
 
   render() {
@@ -40,7 +81,7 @@ class GeneratorView extends Component {
         </Form>
         <button
           className={"btn btn-primary" + (!(title && text) ? " disabled" : "")}
-          onClick={this.handleAssignmentOpen}
+          onClick={this.handleGenerate}
         >
           Generate
         </button>

@@ -1,72 +1,147 @@
 import React, { Component } from "react";
 import _ from "lodash";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 class AssignmentView extends Component {
   state = {
-    assignment: {
-      title: "Title",
-      questions: [
-        {
-          id: 1,
-          text: "asdafksdvjsdnmvjsd sdjnsjd cajieeandfajedajnda caw cawjd ",
-          answer: "2019"
-        },
-        {
-          id: 2,
-          text: "asdafksdvjsdnmvjsd sdjnsjd cajieeandfajedajnda caw cawjd ",
-          answer: "2018"
-        },
-        {
-          id: 3,
-          text: "asdafksdvjsdnmvjsd sdjnsjd cajieeandfajedajnda caw cawjd ",
-          answer: "2017"
-        }
-      ]
+    assignment: null
+  };
+
+  apiClient;
+
+  constructor(props) {
+    super(props);
+    const { webApiBaseUrl } = this.props;
+
+    this.apiClient = axios.create({
+      baseURL: webApiBaseUrl
+    });
+  }
+
+  async componentDidMount() {
+    const { match, location } = this.props;
+
+    if (match.params.id) {
+      await this.getAssignment();
+    } else {
+      var id = 1;
+      location.state.assignment.Questions.forEach(element => {
+        element.Id = id++;
+      });
+
+      this.setState({
+        assignment: location.state.assignment
+      });
     }
+  }
+
+  getAssignment = async () => {
+    await this.apiClient
+      .get(`TestGenerator/GetAssignment/${this.props.match.params.id}`)
+      .then(response => {
+        this.setState({
+          assignment: response.data
+        });
+      })
+      .catch(error => {
+        this.handleError(error);
+      });
+  };
+
+  createAssignment = async () => {
+    await this.apiClient
+      .post(`TestGenerator/CreateAssignment`, this.state.assignment)
+      .then(response => {
+        this.setState({
+          assignment: response.data
+        });
+      })
+      .catch(error => {
+        this.handleError(error);
+      });
+  };
+
+  updateAssignment = async () => {
+    await this.apiClient
+      .put(
+        `TestGenerator/UpdateAssignment/${this.props.match.params.id}`,
+        this.state.assignment
+      )
+      .then(response => {
+        this.setState({
+          assignment: response.data
+        });
+      })
+      .catch(error => {
+        this.handleError(error);
+      });
+  };
+
+  handleError = error => {
+    console.log(error);
+    toast("There was a problem while communicating with the Api", {
+      type: toast.TYPE.ERROR
+    });
   };
 
   handleDelete = idToDelete => {
     const clone = { ...this.state.assignment };
-    _.remove(clone.questions, { id: idToDelete });
+    _.remove(clone.Questions, { Id: idToDelete });
     this.setState({ assignment: clone });
   };
 
   handleQuestionTextChange = (event, questionId) => {
     const clone = { ...this.state.assignment };
-    const question = _.find(clone.questions, {
-      id: questionId
+    const question = _.find(clone.Questions, {
+      Id: questionId
     });
-    question.text = event.target.value;
+    question.Text = event.target.value;
     this.setState({ assignment: clone });
   };
 
   handleQuestionAnswerChange = (event, questionId) => {
     const clone = { ...this.state.assignment };
-    const question = _.find(clone.questions, {
-      id: questionId
+    const question = _.find(clone.Questions, {
+      Id: questionId
     });
-    question.answer = event.target.value;
+    question.Answers[0].Text = event.target.value;
     this.setState({ assignment: clone });
   };
 
-  render() {
+  handleSave = async () => {
+    if (this.state.assignment.Id === 0) {
+      await this.createAssignment();
+    } else {
+      await this.updateAssignment();
+    }
+
+    toast("Assignment saved successfully", {
+      type: toast.TYPE.SUCCESS
+    });
+  };
+
+  renderAssignment = assignment => {
+    if (!assignment) {
+      return null;
+    }
+
     var count = 1;
-    const { assignment } = this.state;
 
     return (
       <React.Fragment>
-        <h1 className="mt-3">{assignment.title}</h1>
-        {assignment.questions.map(question => (
-          <div key={question.id}>
+        <h1 className="mt-3">{assignment.Title}</h1>
+        {assignment.Questions.map(question => (
+          <div key={question.Id}>
             <label>{count++}. Question</label>
             <div className="row rounded border p-4 mb-2">
               <div className="col">
                 <input
                   className="form-control"
                   type="text"
-                  value={question.text}
+                  value={question.Text}
                   onChange={event =>
-                    this.handleQuestionTextChange(event, question.id)
+                    this.handleQuestionTextChange(event, question.Id)
                   }
                 />
               </div>
@@ -78,9 +153,9 @@ class AssignmentView extends Component {
                   <input
                     type="text"
                     className="form-control"
-                    value={question.answer}
+                    value={question.Answers[0].Text}
                     onChange={event =>
-                      this.handleQuestionAnswerChange(event, question.id)
+                      this.handleQuestionAnswerChange(event, question.Id)
                     }
                   />
                 </div>
@@ -88,7 +163,7 @@ class AssignmentView extends Component {
               <div className="col col-lg-1">
                 <button
                   className="btn btn-danger"
-                  onClick={() => this.handleDelete(question.id)}
+                  onClick={() => this.handleDelete(question.Id)}
                 >
                   Delete
                 </button>
@@ -97,7 +172,9 @@ class AssignmentView extends Component {
           </div>
         ))}
         <div className="row justify-content-md-center mt-4">
-          <button className="btn btn-success mr-4">Save Changes</button>
+          <button className="btn btn-success mr-4" onClick={this.handleSave}>
+            Save Changes
+          </button>
           <button className="btn btn-primary ml-4 mr-4">
             Export Questions
           </button>
@@ -105,6 +182,12 @@ class AssignmentView extends Component {
         </div>
       </React.Fragment>
     );
+  };
+
+  render() {
+    const { assignment } = this.state;
+
+    return this.renderAssignment(assignment);
   }
 }
 

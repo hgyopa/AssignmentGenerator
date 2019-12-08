@@ -6,15 +6,41 @@ import Dashboard from "./components/dashboard";
 import GeneratorView from "./components/generatorView";
 import AssignmentView from "./components/assignmentView";
 
+const webApiBaseUrl =
+  process.env.NODE_ENV === "development"
+    ? "https://localhost:44327/api/"
+    : "../AssignmentGeneratorApi/api/";
+
 function App() {
   return (
     <React.Fragment>
       <NavBar />
       <main role="main" className="container">
         <Switch>
-          <Route path="/dashboard" component={Dashboard}></Route>
-          <Route path="/generate" component={GeneratorView}></Route>
-          <Route path="/assignment" component={AssignmentView}></Route>
+          <Route
+            path="/dashboard"
+            render={props => (
+              <Dashboard {...props} webApiBaseUrl={webApiBaseUrl} />
+            )}
+          ></Route>
+          <Route
+            path="/generate"
+            render={props => (
+              <GeneratorView {...props} webApiBaseUrl={webApiBaseUrl} />
+            )}
+          ></Route>
+          <Route
+            path="/assignment/:id"
+            render={props => (
+              <AssignmentView {...props} webApiBaseUrl={webApiBaseUrl} />
+            )}
+          ></Route>
+          <Route
+            path="/assignment"
+            render={props => (
+              <AssignmentView {...props} webApiBaseUrl={webApiBaseUrl} />
+            )}
+          ></Route>
           <Redirect to="/dashboard" />
         </Switch>
       </main>
