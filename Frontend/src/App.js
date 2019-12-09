@@ -10,7 +10,7 @@ import LoginView from "./components/loginView";
 const webApiBaseUrl =
   process.env.NODE_ENV === "development"
     ? "https://localhost:44327/"
-    : "../AssignmentGeneratorApi/";
+    : "http://52.155.229.12/AssignmentGeneratorApi/";
 
 function App() {
   return (
